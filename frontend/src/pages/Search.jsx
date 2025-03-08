@@ -62,14 +62,14 @@ function Search(props){
             
             {/*filteredList ? ( */}
             
-            <table>
+            <table class="table table-striped table-dark">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>First</th>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
                         {/* <th>Last</th> */}
-                        <th>Phone</th>
-                        <th>address</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">address</th>
                     </tr>
                 </thead>
                 <tbody>
