@@ -38,7 +38,7 @@
   }
   li {
     /* display: inline; /* removes the line breaks*/
-    float: left;
+    float:left;
   }
   li a {
     display: block;
@@ -54,6 +54,15 @@
   }
   .active {
     background-color: blueviolet;
+  }
+  
+  .error {
+    background-color: rgb(255, 189, 189);
+    color:red;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin:auto;
   }
   
   button {
