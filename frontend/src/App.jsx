@@ -10,6 +10,16 @@ import Add from './pages/Add'
 import Search from './pages/Search'
 
 function App() {
+  const [clients, setClients] = useState([]);
+  function loadClients(){
+    const url = "http://localhost:4000/search/";
+    axios.get(url)
+    .then((res)=>{
+        console.log("res.data: ", res.data);
+        if(res.data != "received")
+        setClients(res.data);
+    });
+  }
   // used to highlighting the active tab on the navbar
   const [addActive, setAddActive] = useState(true);
 
@@ -33,7 +43,7 @@ function App() {
         <li><Link className={addActive ? 'active':''} to="/"
           onClick={toggleActive}>Add</Link></li>
         <li><Link className={addActive ? '':'active'} to='/search'
-          onClick={toggleActive}>Search</Link></li>
+          onClick={()=>{toggleActive(); loadClients();}}>Search</Link></li>
       </ul>
 
       {/**(as I understand it)
@@ -43,7 +53,8 @@ function App() {
        */}
       <Routes>
         <Route path='/' element={<Add />}></Route>
-        <Route path='/Search' element={<Search />}> </Route>
+        <Route path='/Search' element={<Search clients={clients}
+          setClients={setClients} />}> </Route>
       </Routes>
     </BrowserRouter>
   )

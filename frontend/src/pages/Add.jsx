@@ -11,6 +11,11 @@ function Add(){
   // const [validName, setValidName] = useState(false); //starts as false
 
   function processResponse(){
+    //note, what I want to do: get rid of the form, use controlled component method - 
+    // ("one source of truth") so that I can modify the text in the inputs by changing
+    // the stateful variables. Then I will be able to do more checking to make sure
+    // that the responses match the desired format.
+
     console.log("Submit button pressed");
     console.log("name: ", name);
     console.log("number: ", number);
