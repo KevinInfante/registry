@@ -83,12 +83,10 @@ function Search(props){ //props.clients and props.setClients()
             if(checkedBoxes[i]){ //returns false if [i] is 0, true otherwise 
                 clientNumbers.push((checkedBoxes[i]).toString()); //should be a number //props.clients[i].number
                 clientIndexes.push(i);
-                console.log("#s:",clientNumbers);
             }
         }
         if(clientNumbers.length == 0){
             console.log("no client number found");
-            console.log(checkedBoxes);
             return;
         }
 
@@ -112,7 +110,7 @@ function Search(props){ //props.clients and props.setClients()
                 
                 let array = props.clients;
                 console.log("indexes to be deleted: ", clientIndexes);
-                console.log("clients array: ", array);
+                //console.log("clients array: ", array);
 
                 //the indexes are useless if boxes were checked on the filtered list
                 // if size of filteredList is 0, means boxes weren't checked on filtered list
@@ -138,7 +136,7 @@ function Search(props){ //props.clients and props.setClients()
                 }
                 setFilter([]); // OR //sendSearch(searchTerm)
                 setSearchTerm("");
-                console.log("new clients array: ", array);
+                //console.log("new clients array: ", array);
                 props.setClients(array);
         
             })
@@ -147,9 +145,6 @@ function Search(props){ //props.clients and props.setClients()
             });
         }
         else console.log("cancelled");
-
-        console.log(checkedBoxes);
-        console.log("fil li length:", filteredList.length);
     }
     function checked(e){ // this function should change the checkedBoxes list to reflect their checked status
         console.log(e.target.name); // I made element name equal to the client number

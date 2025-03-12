@@ -22,13 +22,17 @@ function App() {
   }
   // used to highlighting the active tab on the navbar
   const [addActive, setAddActive] = useState(true);
+  
 
   //stateful vars that track if the inputs are in an invalid state
   // const [validName, setValidName] = useState(false); //starts as false
 
-  function toggleActive(){
+  function toggleAdd(){
     //if it's true, set to false, else set to true
-    addActive ? setAddActive(false) : setAddActive(true);
+    if(!addActive) setAddActive(true);
+  }
+  function toggleSearch(){
+    if(addActive) setAddActive(false);
   }
 
   return (
@@ -41,9 +45,9 @@ function App() {
        */}
       <ul>
         <li><Link className={addActive ? 'active':''} to="/"
-          onClick={toggleActive}>Add</Link></li>
+          onClick={toggleAdd}>Add</Link></li>
         <li><Link className={addActive ? '':'active'} to='/search'
-          onClick={()=>{toggleActive(); loadClients();}}>Search</Link></li>
+          onClick={()=>{toggleSearch(); loadClients();}}>Search</Link></li>
       </ul>
 
       {/**(as I understand it)
