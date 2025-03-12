@@ -13,7 +13,7 @@ function Search(props){ //props.clients and props.setClients()
     const url = "http://localhost:4000/search/";
     function sendSearch(e){
         setSearchTerm(e.target.value);
-        if(e.target.value=="") setFilter(props.clients);
+        if(e.target.value=="") setFilter([]);
         else{
             setFilter([]);
             let arr = [];
@@ -45,15 +45,15 @@ function Search(props){ //props.clients and props.setClients()
     //     console.log(searchTerm);
     // }    
     function Table(contact){   /*I splet Table and create table into 2 to get rid of the "each child in list ...unique key" warning */
-        if(props.clients.length > checkedBoxes.length) checkedBoxes.push(false);
+        if(props.clients.length > checkedBoxes.length) checkedBoxes.push(0);
         return (
             <tr>
                 <th scope='row'>{contact.index}</th>
                 <td>{contact.name}</td>
                 <td>{contact.number}</td>
                 <td>{contact.address}</td>
-                <td><input type="checkbox" value="delete" id={`check${contact.index}`}
-                    name = {`${contact.index}`} onClick={(e)=>{checked(e)}}></input></td> {/*Is name necessary?*/}
+                <td><input type="checkbox" value="delete" id={`${contact.index}`/* formerly `check${contact.index}` */} 
+                    name = {`${contact.number}`} onClick={(e)=>{checked(e)}}></input></td> {/*Is name necessary?*/}
             </tr>
         );
     }
@@ -80,14 +80,15 @@ function Search(props){ //props.clients and props.setClients()
         var clientNumbers = [];
         var clientIndexes = [];
         for (let i = 0; i <checkedBoxes.length; i++){
-            if(checkedBoxes[i]==true){
-                clientNumbers.push(props.clients[i].number);
+            if(checkedBoxes[i]){ //returns false if [i] is 0, true otherwise 
+                clientNumbers.push((checkedBoxes[i]).toString()); //should be a number //props.clients[i].number
                 clientIndexes.push(i);
-                console.log(clientNumbers);
+                console.log("#s:",clientNumbers);
             }
         }
         if(clientNumbers.length == 0){
             console.log("no client number found");
+            console.log(checkedBoxes);
             return;
         }
 
@@ -108,14 +109,35 @@ function Search(props){ //props.clients and props.setClients()
 
                 //Then, I delete them from the stateful array too:
                 // need to delete the large indexes first, so sort from large to small
-                clientIndexes.sort((a, b) => b - a);
+                
                 let array = props.clients;
                 console.log("indexes to be deleted: ", clientIndexes);
                 console.log("clients array: ", array);
+
+                //the indexes are useless if boxes were checked on the filtered list
+                // if size of filteredList is 0, means boxes weren't checked on filtered list
+                if(filteredList.length != 0){ //if size ISN'T 0, boxes checked on filterd list
+                    console.log("FILTER DELETE TRIGGERED");
+                    //go thru the clients array, look for phone # matches
+                    // and rewrite the client indexes array
+                    clientIndexes = [];
+                    for(let i = 0; i<checkedBoxes.length; i++){
+                        if(checkedBoxes[i] == 0) continue;
+                        for(let j = 0; j<array.length; j++){
+                            if(checkedBoxes[i] == array[j].number){
+                                clientIndexes.push(j);
+                                break;
+                            }
+                        }
+                    }
+                    console.log("DELETE INDEXES:", clientIndexes);
+                }
+                clientIndexes.sort((a, b) => b - a); //client indexes sorted from largest to smallest
                 for(let i = 0; i<clientIndexes.length; i++){
                     array.splice(clientIndexes[i], 1);
                 }
-                setFilter([]);
+                setFilter([]); // OR //sendSearch(searchTerm)
+                setSearchTerm("");
                 console.log("new clients array: ", array);
                 props.setClients(array);
         
@@ -127,14 +149,15 @@ function Search(props){ //props.clients and props.setClients()
         else console.log("cancelled");
 
         console.log(checkedBoxes);
+        console.log("fil li length:", filteredList.length);
     }
     function checked(e){ // this function should change the checkedBoxes list to reflect their checked status
-        console.log(e.target.name);
+        console.log(e.target.name); // I made element name equal to the client number
         
-        let index = parseInt(e.target.name); //index of 0 is the first checkbox, 1 the second, etc.
+        let index = parseInt(e.target.id); //index of 0 is the first checkbox, 1 the second, etc.
 
-        // if it's not checked, set it to true, else set it to false
-        checkedBoxes[index] == false ? checkedBoxes[index] = true : checkedBoxes[index] = false;
+        // if it's not checked, set it to the #, else set it to 0
+        checkedBoxes[index] == 0 ? checkedBoxes[index] = parseInt(e.target.name) : checkedBoxes[index] = 0;
     }
 
     return (
