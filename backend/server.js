@@ -63,6 +63,8 @@ app.get('/search/', async (req, res) => {
     }
 });
 
+// endpoint below probably isn't necessary anymore, since I just use the one above
+// to get the whole list and js array functions to filter it.
 app.get('/search/:search', async (req, res) => {
     let search = req.params.search; //could be a name or a number
     console.log("search: ", search);
@@ -107,6 +109,27 @@ app.get('/search/:search', async (req, res) => {
     //     client.close();
     // }
 });
+
+app.delete('/delete', async(req, res)=>{
+    console.log("request received");
+    console.log("body:",req.body);
+    let numbers = req.body.numbers; //an array of phone numbers
+    console.log(numbers);
+
+    try{
+        await client.connect();
+        var result = await dbo.collection(db.collection)
+            .deleteMany({number: {$in: numbers}});
+        res.status(200).send(result);
+        console.log(result);
+    }catch{
+        console.log("something went wrong");
+        res.status(500).send("something went wrong");
+    }finally{
+        client.close();
+    }
+    //res.status(200).send("ok");
+})
 
 // app.listen...
 app.listen(port, ()=>{
