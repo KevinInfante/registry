@@ -44,7 +44,7 @@ function Search(props){ //props.clients and props.setClients()
     //     setSearchTerm(event.target.value);
     //     console.log(searchTerm);
     // }    
-    function Table(contact){   /*I splet Table and create table into 2 to get rid of the "each child in list ...unique key" warning */
+    function Table(contact){   /*I split Table and create table into 2 to get rid of the "each child in list ...unique key" warning */
         if(props.clients.length > checkedBoxes.length) checkedBoxes.push(0);
         return (
             <tr>
@@ -52,6 +52,7 @@ function Search(props){ //props.clients and props.setClients()
                 <td>{contact.name}</td>
                 <td>{contact.number}</td>
                 <td>{contact.address}</td>
+                <td>{contact.date}</td>
                 <td><input type="checkbox" value="delete" id={`${contact.index}`/* formerly `check${contact.index}` */} 
                     name = {`${contact.number}`} onClick={(e)=>{checked(e)}}></input></td> {/*Is name necessary?*/}
             </tr>
@@ -65,6 +66,7 @@ function Search(props){ //props.clients and props.setClients()
                 number = {client.number}
                 address = {client.address}
                 index = {index}
+                date = {client.date[client.date.length-1]}
              />
         );
     }
@@ -81,7 +83,7 @@ function Search(props){ //props.clients and props.setClients()
         var clientIndexes = [];
         for (let i = 0; i <checkedBoxes.length; i++){
             if(checkedBoxes[i]){ //returns false if [i] is 0, true otherwise 
-                clientNumbers.push((checkedBoxes[i]).toString()); //should be a number //props.clients[i].number
+                clientNumbers.push((checkedBoxes[i])); //should be a number //props.clients[i].number
                 clientIndexes.push(i);
             }
         }
@@ -96,6 +98,7 @@ function Search(props){ //props.clients and props.setClients()
             console.log("deleting.");
             let url = "http://localhost:4000/delete/";
             
+            console.log(clientNumbers);
             axios.delete(url, { 
                 data: {
                     numbers: clientNumbers,
@@ -152,7 +155,7 @@ function Search(props){ //props.clients and props.setClients()
         let index = parseInt(e.target.id); //index of 0 is the first checkbox, 1 the second, etc.
 
         // if it's not checked, set it to the #, else set it to 0
-        checkedBoxes[index] == 0 ? checkedBoxes[index] = parseInt(e.target.name) : checkedBoxes[index] = 0;
+        checkedBoxes[index] == 0 ? checkedBoxes[index] = (e.target.name) : checkedBoxes[index] = 0;
     }
 
     return (
@@ -163,14 +166,15 @@ function Search(props){ //props.clients and props.setClients()
             
             {/*filteredList ? ( */}
             
-            <table class="table table-striped table-dark">
+            <table className="table table-striped table-dark">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">First</th>
                         {/* <th>Last</th> */}
                         <th scope="col">Phone</th>
-                        <th scope="col">address</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Last pick up</th>
                         <th scope="col" onClick={deleteAll}><button>delete</button></th>
                     </tr>
                 </thead>

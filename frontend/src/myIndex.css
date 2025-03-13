@@ -64,6 +64,14 @@
     text-align: center;
     margin:auto;
   }
+  .success {
+    background-color: rgb(171, 255, 171);
+    color:rgb(1, 64, 1);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin:auto;
+  }
   
   button {
     border-radius: 8px;

@@ -63,51 +63,31 @@ app.get('/search/', async (req, res) => {
     }
 });
 
-// endpoint below probably isn't necessary anymore, since I just use the one above
-// to get the whole list and js array functions to filter it.
+// endpoint below is for getting a specific client by phone number
 app.get('/search/:search', async (req, res) => {
-    let search = req.params.search; //could be a name or a number
-    console.log("search: ", search);
-    if(isNaN(search)){ //search by name
-        try{
-            console.log("search by name: ", search);
-            await client.connect();
-            var result = await dbo.collection(db.collection)
-                .find({"name":search}).toArray();
+    let search = req.params.search; //should be a number
+    console.log("search: ",search);
+    try{
+        await client.connect();
+        var result = await dbo.collection(db.collection)
+        .findOne({"number":search});
+        if(result) {
+            console.log("found");
             res.status(200).send(result);
-        } catch{
-            console.log("something went wrong");
-            res.status(400).send("received");
-        } finally{
-            client.close();
         }
-    } else { // search by phone number
-        console.log("search by number: ", search);
-        try{
-            await client.connect();
-            var result = await dbo.collection(db.collection)
-            .find({"number":search}).toArray();
-            res.status(200).send(result);
-        } catch{
-            console.log("something went wrong");
-            res.status(400).send("received");
-        } finally{
-            client.close();
+        else{
+            console.log("result: ", result);
+            throw new Error("Not found");
         }
+        //res.status(200).send(result);
     }
-    //res.status(200).send("received");
-
-    // try{
-    //     await client.connect();
-    //     var result = await dbo.collection(db.collection)
-    //         .find({"userID": userID}).toArray();
-    //     res.status(200).send(result);
-    //     console.log(result);
-    // }catch{
-    //     console.log("something went wrong");
-    // }finally{
-    //     client.close();
-    // }
+    catch(err){
+        res.status(404).send("something wrong");
+    }
+    finally{
+        client.close();
+    }
+    
 });
 
 app.delete('/delete', async(req, res)=>{
@@ -129,6 +109,32 @@ app.delete('/delete', async(req, res)=>{
         client.close();
     }
     //res.status(200).send("ok");
+})
+
+// .put or .post is probably identical, that's how it is in axios
+app.put('/update/:number', async (req, res) =>{
+    console.log("body: ",req.body); // body: {number: '111...', dates: [...]}
+    let query = { "number": req.body.number };
+    var customer = { //only sending the dates bc that's what I want updated
+        "date": req.body.dates
+    }
+    try{
+        await client.connect();
+        var result = await dbo.collection(db.collection).updateOne(query, {$set: customer});
+        if(result){
+            console.log("result: ", result);
+            res.status(200).send(result);
+        }  else{
+            console.log("NULL RESULT? ", result);
+            throw new Error("update failed");
+        }
+    } catch(err){
+        console.log("error: ", err);
+        res.status(400).send(err);
+
+    } finally {
+        client.close();
+    }
 })
 
 // app.listen...
