@@ -21,16 +21,14 @@ function Add(){
   // const [validName, setValidName] = useState(false); //starts as false
   const [err, setErr] = useState("");
 
+  function clearFields(){
+    setName("");
+    setLastName("");
+    setNumber("");
+    setAddress("");
+  }
+
   function processResponse(){
-    //note, what I want to do: get rid of the form, use controlled component method - 
-    // ("one source of truth") so that I can modify the text in the inputs by changing
-    // the stateful variables. Then I will be able to do more checking to make sure
-    // that the responses match the desired format.
-
-    setLoading(true);
-    //note/ TODO: i need to clear the stateful vars after submitting, or else submit
-    // btn works again (with fields empty)
-
     console.log("Submit button pressed");
     console.log("name: ", name);
     console.log("last name: ", lastName)
@@ -52,7 +50,10 @@ function Add(){
       setErr(errMsg);
       return;
     }
+
     setErr("");
+    setLoading(true);
+
 
     let formattedDate = today.slice(5, 10) + '-'+today.slice(0, 4);
 
@@ -72,6 +73,7 @@ function Add(){
       let dates = response.data.date;
       if(lastPickUp==formattedDate){
         setErr("Client already added today");
+        clearFields(); 
         setLoading(false);
         return;
       }
@@ -89,6 +91,7 @@ function Add(){
             //set added
             setLoading(false);
             showAdded(true);
+            clearFields();
             setTimeout(()=>showAdded(false), 3000);
             return;
           })
@@ -116,6 +119,7 @@ function Add(){
         console.log("response: ", response);
         setLoading(false);
         showAdded(true);
+        clearFields();
         setTimeout(()=>showAdded(false), 3000);
       })
       .catch(function(error){
@@ -133,15 +137,14 @@ function Add(){
 
   return (
     <>
-      <form action={processResponse}>
       <p>First Name</p>
-      <input onChange={(e)=>{setName(e.target.value); }} type="text"></input>
+      <input onChange={(e)=>{setName(e.target.value); }} value={name} type="text"></input>
       <p>Last Name</p>
-      <input onChange={(e)=>{setLastName(e.target.value); }} type="text"></input>
+      <input onChange={(e)=>{setLastName(e.target.value); }} value={lastName} type="text"></input>
       <p>Phone Number</p>
-      <input onChange={(e)=>{setNumber(e.target.value); }}type="text"></input>
+      <input onChange={(e)=>{setNumber(e.target.value); }} value={number} type="text"></input>
       <p>Address</p>
-      <input onChange={(e)=>{setAddress(e.target.value); }} type="text"></input>
+      <input onChange={(e)=>{setAddress(e.target.value); }} value={address} type="text"></input>
       {/* <br></br>
       <label for="pickupDay">Date:</label> */}
       <p>date</p>
@@ -149,9 +152,14 @@ function Add(){
       defaultValue={today}></input>
       <br></br>
       <br></br>
-      <button type='submit'>Submit</button>
+      <button type='submit' onClick={processResponse}>Submit</button>
       { loading &&
-        <p style={{color:'yellow'}}>Loading</p>
+        <>
+        <br></br>
+        <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+        </div>
+        </>
       }
       { added &&
         <div className='success'>Added</div>
@@ -159,7 +167,6 @@ function Add(){
       {err &&
        <div className='error'>{err}</div>
       }
-      </form>
     </>
   )
 }
