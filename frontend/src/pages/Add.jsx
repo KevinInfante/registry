@@ -8,6 +8,8 @@ function Add(){
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
   today = yyyy + '-' + mm + '-' + dd; //format: 2025-03-12
+  let url = window.location.host;
+  (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; 
 
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -54,10 +56,8 @@ function Add(){
     setErr("");
     setLoading(true);
 
-
     let formattedDate = today.slice(5, 10) + '-'+today.slice(0, 4);
 
-    const url = "http://localhost:4000";
     //make a call, using the phone number (lol)
     // if client is not in the database, add them
     // if client is already in the database for today, set err to "client already added today"

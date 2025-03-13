@@ -9,11 +9,14 @@ import { Outlet, Link } from "react-router-dom";
 import Add from './pages/Add'
 import Search from './pages/Search'
 
+let url = window.location.host;
+      //if on port 5173, then we're running locally, therefore make call to 4000, otherwise use current url
+  (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; //eg ...localhost:4000
+
 function App() {
   const [clients, setClients] = useState([]);
   function loadClients(){
-    const url = "http://localhost:4000/search/";
-    axios.get(url)
+    axios.get(url+"/searching/")
     .then((res)=>{
         console.log("res.data: ", res.data);
         if(res.data != "received")

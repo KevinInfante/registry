@@ -10,7 +10,9 @@ function Search(props){ //props.clients and props.setClients()
     var checkedBoxes = []; //size needs to expand as the # of clients grows.
 
     //function that makes call to the db
-    const url = "http://localhost:4000/search/";
+    //const url = "http://localhost:4000/searching/";
+    let url = window.location.host;
+    (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; 
     function sendSearch(e){
         setSearchTerm(e.target.value);
         if(e.target.value=="") setFilter([]);
@@ -96,10 +98,9 @@ function Search(props){ //props.clients and props.setClients()
 
         if(deleteCode == 1972) {
             console.log("deleting.");
-            let url = "http://localhost:4000/delete/";
             
             console.log(clientNumbers);
-            axios.delete(url, { 
+            axios.delete(url+'/delete', { 
                 data: {
                     numbers: clientNumbers,
                 }

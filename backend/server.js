@@ -4,6 +4,9 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import db from "./config.js"
 
+import path from 'path';
+const __dirname = import.meta.dirname;
+
 // axios
 import axios from 'axios'
 
@@ -48,7 +51,7 @@ app.post("/add", async (req, res) => {
     }
 })
 
-app.get('/search/', async (req, res) => {
+app.get('/searching/', async (req, res) => {
     console.log("sending full list...")
     try{
         await client.connect();
@@ -64,7 +67,7 @@ app.get('/search/', async (req, res) => {
 });
 
 // endpoint below is for getting a specific client by phone number
-app.get('/search/:search', async (req, res) => {
+app.get('/searching/:search', async (req, res) => {
     let search = req.params.search; //should be a number
     console.log("search: ",search);
     try{
@@ -136,6 +139,11 @@ app.put('/update/:number', async (req, res) =>{
         client.close();
     }
 })
+
+app.use(express.static(path.resolve(__dirname, '../frontend/dist')));
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html'));
+});
 
 // app.listen...
 app.listen(port, ()=>{
