@@ -10,8 +10,8 @@ import Add from './pages/Add'
 import Search from './pages/Search'
 
 let url = window.location.host;
-      //if on port 5173, then we're running locally, therefore make call to 4000, otherwise use current url
-  (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; //eg ...localhost:4000
+      //if on port 5173, then we're running locally, therefore make call to 4001, otherwise use current url
+  (url == "localhost:5173") ? url = "http://localhost:4001" : url = window.location.origin; //eg ...localhost:4001
 
 function App() {
   const [clients, setClients] = useState([]);

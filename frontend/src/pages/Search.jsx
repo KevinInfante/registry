@@ -10,9 +10,9 @@ function Search(props){ //props.clients and props.setClients()
     var checkedBoxes = []; //size needs to expand as the # of clients grows.
 
     //function that makes call to the db
-    //const url = "http://localhost:4000/searching/";
+    //const url = "http://localhost:4001/searching/";
     let url = window.location.host;
-    (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; 
+    (url == "localhost:5173") ? url = "http://localhost:4001" : url = window.location.origin; 
     function sendSearch(e){
         setSearchTerm(e.target.value);
         if(e.target.value=="") setFilter([]);
@@ -52,6 +52,7 @@ function Search(props){ //props.clients and props.setClients()
             <tr>
                 <th scope='row'>{contact.index}</th>
                 <td>{contact.name}</td>
+                <td>{contact.lastName}</td>
                 <td>{contact.number}</td>
                 <td>{contact.address}</td>
                 <td>{contact.date}</td>
@@ -65,6 +66,7 @@ function Search(props){ //props.clients and props.setClients()
             <Table 
                 key={index}
                 name = {client.name}
+                lastName = {client.lastName}
                 number = {client.number}
                 address = {client.address}
                 index = {index}
@@ -172,11 +174,11 @@ function Search(props){ //props.clients and props.setClients()
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">First</th>
-                        {/* <th>Last</th> */}
+                        <th scope="col">Last</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Address</th>
                         <th scope="col">Last pick up</th>
-                        <th scope="col" onClick={deleteAll}><button>delete</button></th>
+                        <th scope="col" onClick={deleteAll}><button className='del'>delete</button></th>
                     </tr>
                 </thead>
                 <tbody>

@@ -21,7 +21,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 app.use(bodyParser.json()); //this is necessary for the axios call from the frontend to work
-const port = 4000;
+const port = 4001;
 
 app.post("/add", async (req, res) => {
     //req.body.name

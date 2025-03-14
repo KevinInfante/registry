@@ -9,7 +9,7 @@ function Add(){
   var yyyy = today.getFullYear();
   today = yyyy + '-' + mm + '-' + dd; //format: 2025-03-12
   let url = window.location.host;
-  (url == "localhost:5173") ? url = "http://localhost:4000" : url = window.location.origin; 
+  (url == "localhost:5173") ? url = "http://localhost:4001" : url = window.location.origin; 
 
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -63,7 +63,8 @@ function Add(){
     // if client is already in the database for today, set err to "client already added today"
       // if client is in the database for previous day, create prompt:
        //client last came on ..., add for today? (enter code?)
-    axios.get(url+`/search/${number}`)
+    console.log("****URL*****", url);
+    axios.get(url+`/searching/${number}`)
     .then(function(response){
       console.log("client already added:");
       console.log(response);
@@ -147,12 +148,11 @@ function Add(){
       <input onChange={(e)=>{setAddress(e.target.value); }} value={address} type="text"></input>
       {/* <br></br>
       <label for="pickupDay">Date:</label> */}
-      <p>date</p>
+      <p>Date</p>
       <input type="date" id="pickupDay" name="Date" onChange={changeDate}
       defaultValue={today}></input>
-      <br></br>
-      <br></br>
-      <button type='submit' onClick={processResponse}>Submit</button>
+      <button style={{marginTop:'10px'}} type='submit' 
+        onClick={processResponse}>Submit</button>
       { loading &&
         <>
         <br></br>

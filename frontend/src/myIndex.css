@@ -27,6 +27,11 @@
     /*place-items: center;*/
     min-width: 320px;
     min-height: 100vh;
+    background-color: #efeeee;
+  }
+
+  p {
+    margin: 10px auto;
   }
 
   ul {
@@ -72,7 +77,24 @@
     text-align: center;
     margin:auto;
   }
+  .del {
+    padding: 0.3em 0.6em;
+    /* color: whitesmoke;
+    background-color: #242424; */
+    background-color: #ffffff;
+    color:#1a1a1a;
+  }
   
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    outline: none;
+    transition: border 0.3s;
+}
+
   button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -101,7 +123,9 @@
       color: #747bff;
     }
     button {
-      background-color: #f9f9f9;
+      color: whitesmoke;
+      background-color: #242424;
+      /*background-color: #f9f9f9;*/
     }
   }
   
