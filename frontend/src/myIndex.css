@@ -33,6 +33,28 @@
   p {
     margin: 10px auto;
   }
+  a.view{
+    text-decoration: none;
+    color: white;
+  }
+  a.view:hover{
+    color:blue;
+    text-decoration: underline;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  .container h1{
+    font-size: 1.5em;
+  }
+  .container p{
+    font-size: 1em;
+  }
 
   ul {
     list-style-type: none; /*removes the bullets*/

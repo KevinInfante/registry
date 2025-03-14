@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from "react-router-dom";
 import axios from 'axios'
 
 function Search(props){ //props.clients and props.setClients()
@@ -51,11 +52,12 @@ function Search(props){ //props.clients and props.setClients()
         return (
             <tr>
                 <th scope='row'>{contact.index}</th>
-                <td>{contact.name}</td>
+                <td><Link to={'/view'} onClick={()=>{props.setClient(contact); props.toggleView();}}
+                     className='view' >{contact.name}</Link></td>
                 <td>{contact.lastName}</td>
                 <td>{contact.number}</td>
                 <td>{contact.address}</td>
-                <td>{contact.date}</td>
+                <td>{contact.date[contact.date.length-1]}</td>
                 <td><input type="checkbox" value="delete" id={`${contact.index}`/* formerly `check${contact.index}` */} 
                     name = {`${contact.number}`} onClick={(e)=>{checked(e)}}></input></td> {/*Is name necessary?*/}
             </tr>
@@ -70,7 +72,7 @@ function Search(props){ //props.clients and props.setClients()
                 number = {client.number}
                 address = {client.address}
                 index = {index}
-                date = {client.date[client.date.length-1]}
+                date = {client.date}
              />
         );
     }

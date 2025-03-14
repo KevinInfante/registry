@@ -5,9 +5,10 @@ import viteLogo from '/vite.svg'
 import './myIndex.css'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Add from './pages/Add'
 import Search from './pages/Search'
+import View from './pages/View'
 
 let url = window.location.host;
       //if on port 5173, then we're running locally, therefore make call to 4001, otherwise use current url
@@ -25,17 +26,31 @@ function App() {
   }
   // used to highlighting the active tab on the navbar
   const [addActive, setAddActive] = useState(true);
-  
+  const [searchActive, setSearchActive] = useState(false);
+  const [view, showView] = useState(false);
+  const [client, setClient] = useState();
 
   //stateful vars that track if the inputs are in an invalid state
   // const [validName, setValidName] = useState(false); //starts as false
 
   function toggleAdd(){
     //if it's true, set to false, else set to true
-    if(!addActive) setAddActive(true);
+    setAddActive(true);
+    if(searchActive) setSearchActive(false);
+    showView(false);
   }
   function toggleSearch(){
-    if(addActive) setAddActive(false);
+    showView(true);
+    
+    if(addActive)setAddActive(false);
+    setSearchActive(true);
+    showView(false);
+  }
+  function toggleView(){
+    if(searchActive) {
+      setSearchActive(false);
+      showView(true);
+    }
   }
 
   return (
@@ -49,8 +64,11 @@ function App() {
       <ul>
         <li><Link className={addActive ? 'active':''} to="/"
           onClick={toggleAdd}>Add</Link></li>
-        <li><Link className={addActive ? '':'active'} to='/search'
+        <li><Link className={searchActive ? 'active':''} to='/search'
           onClick={()=>{toggleSearch(); loadClients();}}>Search</Link></li>
+        { view &&
+          <li> <Link className='active'>View</Link></li>
+        }
       </ul>
 
       {/**(as I understand it)
@@ -61,7 +79,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Add />}></Route>
         <Route path='/Search' element={<Search clients={clients}
-          setClients={setClients} />}> </Route>
+          toggleView={toggleView} setClients={setClients}
+           client={client} setClient={setClient}/>}> </Route>
+        <Route path='/View' element={<View client={client} />} />
       </Routes>
     </BrowserRouter>
   )
