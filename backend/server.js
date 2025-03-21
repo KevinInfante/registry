@@ -89,18 +89,19 @@ app.delete('/delete', async(req, res)=>{
     console.log(numbers);
 
     try{
-        await client.connect();
-        var result = await dbo.collection(db.collection)
-            .deleteMany({number: {$in: numbers}});
-        res.status(200).send(result);
-        console.log(result);
+        //await client.connect();
+        var result = await client.query("DELETE FROM clients WHERE number = \
+            ANY($1::text[]) RETURNING*;", [numbers]
+        )
+        res.status(200).send(result.rows);
+        console.log(result.rows);
     }catch{
         console.log("something went wrong");
         res.status(500).send("something went wrong");
-    }finally{
-        client.close();
     }
-    //res.status(200).send("ok");
+    //finally{
+    //     client.close();
+    // }
 })
 
 // .put or .post is probably identical, that's how it is in axios
