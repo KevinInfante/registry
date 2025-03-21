@@ -11,11 +11,10 @@ const __dirname = import.meta.dirname;
 import axios from 'axios'
 
 //mongo
-import mongodb from 'mongodb'
+import pg from "pg";
 
-const uri = "mongodb+srv://"+db.user+":"+db.pass+"@"+db.host+"/?retryWrites=true&w=majority";
-const client = new mongodb.MongoClient(uri);
-let dbo = client.db(db.name);
+const client = new pg.Client(db);
+client.connect(); 
 
 const app = express();
 app.use(bodyParser.urlencoded({extended:false}));
@@ -32,13 +31,16 @@ app.post("/add", async (req, res) => {
     console.log("client details: ", req.body.name, req.body.number, req.body.address);
     let object = req.body;
     console.log("client: ",object);
+    let {name, lastName, number, address, date} = object;
+    console.log("destr", name, lastName, number, address, date);
 
     // search the database to see if client already exists
     // if not, add to database and send "successfully inserted"
 
     try{
-        await client.connect();
-        await dbo.collection(db.collection).insertOne(object);
+        //await client.connect();
+        await client.query("INSERT INTO clients (name, lastname, number, address, date)\
+            VALUES ($1, $2, $3, $4, $5)",[name, lastName, number, address, date]);
         res.status(200).send("successfully inserted");
         console.log("successfully inserted");
     }
@@ -46,23 +48,16 @@ app.post("/add", async (req, res) => {
         console.log("error: ", err);
         res.status(400).send("error: ", err);
     }
-    finally{
-        client.close();
-    }
 })
 
 app.get('/searching/', async (req, res) => {
     console.log("sending full list...")
     try{
-        await client.connect();
-        var result = await dbo.collection(db.collection)
-            .find({}).toArray();
-        res.status(200).send(result);
-        console.log(result);
+        var result = await client.query("SELECT * FROM clients")
+        res.status(200).send(result.rows);
+        console.log(result.rows);
     }catch{
         console.log("something went wrong");
-    }finally{
-        client.close();
     }
 });
 
@@ -71,10 +66,8 @@ app.get('/searching/:search', async (req, res) => {
     let search = req.params.search; //should be a number
     console.log("search: ",search);
     try{
-        await client.connect();
-        var result = await dbo.collection(db.collection)
-        .findOne({"number":search});
-        if(result) {
+        var result = await client.query("SELECT * WHERE number = $1", [search])
+        if(result.rows.length>0) {
             console.log("found");
             res.status(200).send(result);
         }
@@ -87,10 +80,6 @@ app.get('/searching/:search', async (req, res) => {
     catch(err){
         res.status(404).send("something wrong");
     }
-    finally{
-        client.close();
-    }
-    
 });
 
 app.delete('/delete', async(req, res)=>{
