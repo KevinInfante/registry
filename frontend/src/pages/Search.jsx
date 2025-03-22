@@ -68,7 +68,7 @@ function Search(props){ //props.clients and props.setClients()
             <Table 
                 key={index}
                 name = {client.name}
-                lastName = {client.lastName}
+                lastName = {client.lastname}
                 number = {client.number}
                 address = {client.address}
                 index = {index}
