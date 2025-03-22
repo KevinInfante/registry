@@ -170,7 +170,7 @@ function Search(props){ //props.clients and props.setClients()
             onChange={sendSearch} value={searchTerm}></input>
             
             {/*filteredList ? ( */}
-            
+            <div className='table-container'>
             <table className="table table-striped table-dark">
                 <thead>
                     <tr>
@@ -193,7 +193,7 @@ function Search(props){ //props.clients and props.setClients()
                 )}
             </tbody>
             </table>
-            
+            </div>
         </>
     )
 }

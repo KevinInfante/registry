@@ -139,17 +139,17 @@ function Add(){
   return (
     <>
       <p>First Name</p>
-      <input onChange={(e)=>{setName(e.target.value); }} value={name} type="text"></input>
+      <input className='add' onChange={(e)=>{setName(e.target.value); }} value={name} type="text"></input>
       <p>Last Name</p>
-      <input onChange={(e)=>{setLastName(e.target.value); }} value={lastName} type="text"></input>
+      <input className='add' onChange={(e)=>{setLastName(e.target.value); }} value={lastName} type="text"></input>
       <p>Phone Number</p>
-      <input onChange={(e)=>{setNumber(e.target.value); }} value={number} type="text"></input>
+      <input className='add' onChange={(e)=>{setNumber(e.target.value); }} value={number} type="text"></input>
       <p>Address</p>
-      <input onChange={(e)=>{setAddress(e.target.value); }} value={address} type="text"></input>
+      <input className='add' onChange={(e)=>{setAddress(e.target.value); }} value={address} type="text"></input>
       {/* <br></br>
       <label for="pickupDay">Date:</label> */}
       <p>Date</p>
-      <input type="date" id="pickupDay" name="Date" onChange={changeDate}
+      <input className='add' type="date" id="pickupDay" name="Date" onChange={changeDate}
       defaultValue={today}></input>
       <button style={{marginTop:'10px'}} type='submit' 
         onClick={processResponse}>Submit</button>
