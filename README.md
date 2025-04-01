@@ -6,6 +6,10 @@ This web app is a registry that allows the user to register clients into a datab
 ## Description - Design
 This is a full-stack web application on the MERN stack. It is built with React on the frontend, and Node.js and Express.js on the backend which interact with a database on MongoDB.
 
+## Preview
+Gif:
+![app gif](https://github.com/KevinInfante/registry/blob/main/registry_gif.gif)
+
 ## Build Instructions
 To run this project locally you will need to:
 - Clone the project
